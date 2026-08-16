@@ -1,0 +1,32 @@
+services:
+  runner:
+    build: .
+    image: flow-runner:dev
+    restart: "no"
+    user: "10001:10001"
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs: ["/tmp:size=32m,mode=1777"]
+    environment:
+      FLOW_REGISTRY_PATH: /run/config/registry.yaml
+      FLOW_MONGODB_URI: ${FLOW_MONGODB_URI:?set FLOW_MONGODB_URI with host mongodb}
+      FLOW_LINEAGE_URL: ${FLOW_LINEAGE_URL:-http://lineage:5050}
+      FLOW_LINEAGE_TOKEN: ${FLOW_LINEAGE_TOKEN:?set FLOW_LINEAGE_TOKEN}
+      FLOWPRINT_URL: ${FLOWPRINT_URL:-}
+      NO_PROXY: mongodb,lineage,localhost,127.0.0.1
+    volumes:
+      - ${FLOW_REGISTRY_FILE:-./examples/registry.example.yaml}:/run/config/registry.yaml:ro
+    ports:
+      - "127.0.0.1:${FLOW_RUNNER_PORT:-18090}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks: [flow-net, mongo-net]
+
+networks:
+  flow-net:
+    external: true
+    name: flow-net
+  mongo-net:
+    external: true
+    name: aigen_aigen-net

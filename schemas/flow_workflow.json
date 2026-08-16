@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ndndndn1/flow-runner/schemas/flow_workflow.json",
+  "type": "object",
+  "required": ["namespace", "name", "version", "workflowId", "workflowVersion"],
+  "properties": {
+    "namespace": {"type": "string"},
+    "name": {"type": "string"},
+    "version": {"type": "string"},
+    "workflowId": {"type": "string"},
+    "workflowVersion": {"type": "string"}
+  },
+  "additionalProperties": false
+}

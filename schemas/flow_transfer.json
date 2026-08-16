@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ndndndn1/flow-runner/schemas/flow_transfer.json",
+  "type": "object",
+  "required": ["fromSteps", "dependencySteps", "fromModules", "fromDatasets", "sources", "bindings", "toStep", "toModule"],
+  "properties": {
+    "fromSteps": {"type": "array", "items": {"type": "string"}},
+    "dependencySteps": {"type": "array", "items": {"type": "string"}},
+    "fromModules": {"type": "array", "items": {"type": "string"}},
+    "fromDatasets": {"type": "array", "items": {"type": "string"}},
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "module", "dataset"],
+        "properties": {
+          "step": {"type": "string"},
+          "module": {"type": ["string", "null"]},
+          "dataset": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "bindings": {"type": "object", "additionalProperties": {"type": "string"}},
+    "toStep": {"type": "string"},
+    "toModule": {"type": "string"}
+  },
+  "additionalProperties": false
+}

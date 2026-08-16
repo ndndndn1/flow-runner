@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ndndndn1/flow-runner/schemas/flow_module.json",
+  "type": "object",
+  "required": ["repository", "namespace", "name", "version", "contract"],
+  "properties": {
+    "repository": {"type": "string"},
+    "namespace": {"type": "string"},
+    "name": {"type": "string"},
+    "version": {"type": "string"},
+    "contract": {"type": "string"}
+  },
+  "additionalProperties": false
+}

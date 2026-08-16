@@ -1,0 +1,12 @@
+schema_version: "1.0"
+deployments:
+  flow-observability/timeseries-aggregate@0.2.0:
+    base_url: http://observability:8080
+  flow-decisioning/score-rank@0.2.0:
+    base_url: http://decisioning:8080
+  flow-data-processing/normalize-enrich@0.2.0:
+    base_url: http://data-processing:8080
+  flow-semantic/classify-extract@0.2.0:
+    base_url: http://semantic:8080
+  flow-data-core/data-core@0.2.0:
+    base_url: http://data-core:8080

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ndndndn1/flow-runner/schemas/flow_error.json",
+  "type": "object",
+  "required": ["message"],
+  "properties": {"message": {"type": "string", "maxLength": 1000}},
+  "additionalProperties": false
+}
+

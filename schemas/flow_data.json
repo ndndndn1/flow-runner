@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ndndndn1/flow-runner/schemas/flow_data.json",
+  "type": "object",
+  "required": ["hash", "byteCount", "recordCount", "schemaRef"],
+  "properties": {
+    "hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "byteCount": {"type": "integer", "minimum": 0},
+    "recordCount": {"type": ["integer", "null"], "minimum": 0},
+    "schemaRef": {"type": "string"}
+  },
+  "additionalProperties": false
+}
+

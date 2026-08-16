@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ndndndn1/flow-runner/schemas/flow_step.json",
+  "type": "object",
+  "required": ["workflowId", "stepId", "moduleRef"],
+  "properties": {
+    "workflowId": {"type": "string"},
+    "stepId": {"type": "string"},
+    "moduleRef": {"type": "string"}
+  },
+  "additionalProperties": false
+}
+

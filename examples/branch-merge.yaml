@@ -1,0 +1,28 @@
+schema_version: "1.0"
+workflow:
+  id: branch_merge
+  version: "1.0.0"
+  max_parallel: 4
+steps:
+  - id: source
+    module: flow-data-processing/normalize-enrich@0.2.0
+    bindings:
+      records: workflow.input.records
+  - id: left
+    module: flow-semantic/classify-extract@0.2.0
+    needs: [source]
+    bindings:
+      text: steps.source.output.records[0].text
+      labels: workflow.input.labels
+  - id: right
+    module: flow-data-core/data-core@0.2.0
+    needs: [source]
+    bindings:
+      records: steps.source.output.records
+  - id: merge
+    module: flow-decisioning/score-rank@0.2.0
+    needs: [left, right]
+    bindings:
+      items: "[{branch: 'labels', score: length(steps.left.output.labels)}, {branch: 'fields', score: length(steps.right.output.fields)}]"
+outputs:
+  result: steps.merge.output

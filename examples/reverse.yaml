@@ -1,0 +1,17 @@
+schema_version: "1.0"
+workflow:
+  id: rank_then_aggregate
+  version: "1.0.0"
+  max_parallel: 4
+steps:
+  - id: rank
+    module: flow-decisioning/score-rank@0.2.0
+    bindings:
+      items: workflow.input.items
+  - id: aggregate
+    module: flow-observability/timeseries-aggregate@0.2.0
+    needs: [rank]
+    bindings:
+      points: "steps.rank.output.items[].{value: score}"
+outputs:
+  result: steps.aggregate.output
