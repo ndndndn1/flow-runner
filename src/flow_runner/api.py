@@ -7,6 +7,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 
+from . import __version__
 from .config import Settings
 from .models import RunRequest
 from .runner import LineageBlocked
@@ -22,7 +23,7 @@ async def lifespan(app: FastAPI):
     await services.close()
 
 
-app = FastAPI(title="flow-runner", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="flow-runner", version=__version__, lifespan=lifespan)
 
 
 @app.middleware("http")

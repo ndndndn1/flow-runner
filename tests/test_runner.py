@@ -255,3 +255,28 @@ async def test_retries_5xx_but_not_4xx():
     assert harness.module_calls == [MODULES["a.local"]]
     assert "sensitive" not in json.dumps(store.outbox)
     assert "private response" not in json.dumps(store.outbox)
+
+
+async def test_pending_outbox_is_replayed_and_acked_after_restart():
+    harness = Harness()
+    client = httpx.AsyncClient(transport=httpx.MockTransport(harness.handler))
+    store = MemoryStore()
+    event = {
+        "eventType": "START",
+        "eventTime": "2026-08-17T00:00:00Z",
+        "run": {"runId": "restart-run"},
+        "job": {"namespace": "flow/workflows", "name": "restart"},
+        "inputs": [],
+        "outputs": [],
+        "producer": "https://github.com/ndndndn1/flow-runner",
+    }
+    await store.enqueue("pending-restart-event", event)
+    publisher = OutboxPublisher(store, LineageSink(client, "http://lineage.local"))
+    try:
+        replayed = await publisher.replay_pending()
+    finally:
+        await client.aclose()
+
+    assert replayed == 1
+    assert store.outbox["pending-restart-event"]["state"] == "acked"
+    assert harness.events == [event]

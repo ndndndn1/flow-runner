@@ -13,10 +13,88 @@ can run in either direction in different workflows.
 - 10 MiB payload limit, 30-second request timeout, and two retries for transport/5xx failures.
 - Durable MongoDB outbox in `flow_runtime`. A module is not called before its OpenLineage START
   event is acknowledged, and its output is not exposed downstream before COMPLETE is acknowledged.
+- Pending outbox events from an interrupted process are replayed and acknowledged during startup;
+  startup fails closed while the lineage collector is unavailable.
 - Raw inputs and outputs are never persisted. Run state and lineage retain canonical SHA-256,
   byte count, record count, and schema reference only.
 - Standard OpenLineage parent-run facets plus public `flow_*` facets. Optional Flowprint emission
   uses the same root run ID.
+
+## Repository topology and data flow
+
+`flow-runner` is the orchestrator. Module repositories do not call one another directly: the
+runner discovers each versioned contract, validates the step input, invokes the module, validates
+its output, and binds that output into downstream steps. A workflow may therefore connect the
+module repositories in any valid DAG rather than following one fixed pipeline.
+
+```mermaid
+flowchart TB
+    Caller["Workflow caller<br/>DAG and input payload"]
+    Stack["flow-stack<br/>Private on-demand composition<br/>and deployment registry"]
+    Runner["flow-runner<br/>DAG validation, scheduling,<br/>binding, retries, and fail-closed execution"]
+    Lineage["flow-lineage<br/>Immutable run events, project/module graph,<br/>dataset movement, and impact queries"]
+    Result["Workflow consumer<br/>Selected workflow outputs"]
+
+    subgraph Foundations["Reusable foundation repositories"]
+        ServiceCore["flow-service-core<br/>Wire contracts and runtime dispatch"]
+        DataCore["flow-data-core<br/>Data validation and workflow primitives"]
+        ModelCore["flow-model-core<br/>Model execution and assurance primitives"]
+    end
+
+    subgraph Capabilities["Capability repositories"]
+        Processing["flow-data-processing<br/>Ingest, normalize, enrich, ETL,<br/>and data quality"]
+        Semantic["flow-semantic<br/>Classify, extract, embed, retrieve,<br/>and grounded context"]
+        Vision["flow-vision<br/>Image-matrix and document-text analysis"]
+        Industrial["flow-industrial<br/>Telemetry, protocol checks, SPC,<br/>and traceability"]
+        Decisioning["flow-decisioning<br/>Score, rank, match, recommend,<br/>forecast, and optimize"]
+        Observability["flow-observability<br/>Time-series aggregation, anomaly/drift,<br/>and KPI reporting"]
+    end
+
+    Caller -->|"workflow input"| Runner
+    Stack -. "compose and register deployments" .-> Runner
+    Runner <-->|"contract discovery and validated step I/O"| ServiceCore
+    Runner <-->|"contract discovery and validated step I/O"| DataCore
+    Runner <-->|"contract discovery and validated step I/O"| ModelCore
+    Runner <-->|"contract discovery and validated step I/O"| Processing
+    Runner <-->|"contract discovery and validated step I/O"| Semantic
+    Runner <-->|"contract discovery and validated step I/O"| Vision
+    Runner <-->|"contract discovery and validated step I/O"| Industrial
+    Runner <-->|"contract discovery and validated step I/O"| Decisioning
+    Runner <-->|"contract discovery and validated step I/O"| Observability
+    Runner -. "START / COMPLETE / FAIL events;<br/>dataset references and transfer facets" .-> Lineage
+    Runner -->|"workflow output"| Result
+```
+
+Solid edges carry workflow or step data through the runner. Dotted edges are deployment control
+or metadata-only lineage traffic. `flow-lineage` receives hashes, byte and record counts, schema
+references, bindings, and source/destination relationships—not raw module payloads. `flow-stack`
+currently composes the runner, lineage collector, and a selected runnable subset of module
+repositories; the registry can add deployments without changing the runner.
+
+The checked-in [branch/merge example](examples/branch-merge.yaml) produces this observed movement.
+Every solid module-to-module edge below is mediated and validated by `flow-runner`; it is stored by
+`flow-lineage` as an exact source step, source module, source dataset, and destination module
+relationship.
+
+```mermaid
+flowchart LR
+    Input["workflow.input<br/>records and labels"]
+    Processing["flow-data-processing<br/>normalize-enrich"]
+    Semantic["flow-semantic<br/>classify-extract"]
+    DataCore["flow-data-core<br/>data-core"]
+    Decisioning["flow-decisioning<br/>score-rank"]
+    Output["workflow.output<br/>result"]
+    Runner["flow-runner<br/>mediates all solid edges"]
+    Lineage["flow-lineage<br/>materializes the observed transfer graph"]
+
+    Input -->|"records"| Processing
+    Processing -->|"normalized text"| Semantic
+    Processing -->|"normalized records"| DataCore
+    Semantic -->|"label count"| Decisioning
+    DataCore -->|"field count"| Decisioning
+    Decisioning -->|"ranked result"| Output
+    Runner -. "records workflow, step, module,<br/>dataset, and transfer metadata" .-> Lineage
+```
 
 ## Workflow
 
