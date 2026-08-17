@@ -19,6 +19,7 @@ class RunStore(Protocol):
     async def enqueue(self, event_id: str, event: dict[str, Any]) -> dict[str, Any]: ...
     async def ack(self, event_id: str) -> None: ...
     async def outbox_error(self, event_id: str, error: str) -> None: ...
+    async def pending_outbox(self, limit: int = 1000) -> list[dict[str, Any]]: ...
 
 
 class MemoryStore:
@@ -52,6 +53,11 @@ class MemoryStore:
         item = self.outbox[event_id]
         item.update({"state": "pending", "last_error": error})
         item["attempts"] += 1
+
+    async def pending_outbox(self, limit: int = 1000) -> list[dict[str, Any]]:
+        values = [item for item in self.outbox.values() if item["state"] == "pending"]
+        values.sort(key=lambda item: item.get("created_at", ""))
+        return copy.deepcopy(values[:limit])
 
 
 class MongoStore:
@@ -121,3 +127,13 @@ class MongoStore:
             {"$set": {"state": "pending", "last_error": error}, "$inc": {"attempts": 1}},
         )
 
+    async def pending_outbox(self, limit: int = 1000) -> list[dict[str, Any]]:
+        def work() -> list[dict[str, Any]]:
+            return list(
+                self.db[self.OUTBOX]
+                .find({"state": "pending"}, {"_id": 0})
+                .sort("created_at", ASCENDING)
+                .limit(limit)
+            )
+
+        return await asyncio.to_thread(work)

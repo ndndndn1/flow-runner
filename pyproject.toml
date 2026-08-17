@@ -1,6 +1,6 @@
 [project]
 name = "flow-runner"
-version = "0.1.0"
+version = "0.1.1"
 description = "Generic fail-closed DAG runner with observable data movement"
 requires-python = ">=3.12"
 license = {text = "Apache-2.0"}
@@ -40,4 +40,3 @@ target-version = "py312"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-

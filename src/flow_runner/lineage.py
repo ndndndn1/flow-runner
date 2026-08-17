@@ -188,6 +188,13 @@ class OutboxPublisher:
                     await asyncio.sleep(0.05 * (2**attempt))
         raise RuntimeError(f"lineage acknowledgment failed: {last_error}")
 
+    async def replay_pending(self, limit: int = 1000) -> int:
+        """Deliver durable events left pending by a prior process before accepting new work."""
+        items = await self.store.pending_outbox(limit)
+        for item in items:
+            await self.publish(item["event_id"], item["event"])
+        return len(items)
+
 
 class FlowprintAdapter:
     def __init__(self, client: httpx.AsyncClient, url: str | None) -> None:

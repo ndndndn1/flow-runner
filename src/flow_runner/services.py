@@ -36,6 +36,11 @@ async def build_services(
     registry = DeploymentRegistry.from_path(settings.registry_path, client)
     sink = LineageSink(client, settings.lineage_url, settings.lineage_token)
     publisher = OutboxPublisher(store, sink)
+    try:
+        await publisher.replay_pending()
+    except Exception:
+        await client.aclose()
+        raise
     runner = FlowRunner(
         store=store,
         registry=registry,
@@ -45,4 +50,3 @@ async def build_services(
         max_payload_bytes=settings.max_payload_bytes,
     )
     return Services(runner, store, client)
-

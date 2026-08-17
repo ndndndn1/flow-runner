@@ -13,6 +13,8 @@ can run in either direction in different workflows.
 - 10 MiB payload limit, 30-second request timeout, and two retries for transport/5xx failures.
 - Durable MongoDB outbox in `flow_runtime`. A module is not called before its OpenLineage START
   event is acknowledged, and its output is not exposed downstream before COMPLETE is acknowledged.
+- Pending outbox events from an interrupted process are replayed and acknowledged during startup;
+  startup fails closed while the lineage collector is unavailable.
 - Raw inputs and outputs are never persisted. Run state and lineage retain canonical SHA-256,
   byte count, record count, and schema reference only.
 - Standard OpenLineage parent-run facets plus public `flow_*` facets. Optional Flowprint emission
