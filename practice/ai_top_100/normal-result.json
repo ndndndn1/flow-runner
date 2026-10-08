@@ -1,0 +1,106 @@
+{
+  "result": {
+    "status": "ready",
+    "shipments": [
+      {
+        "order": "O1",
+        "product": "감자",
+        "kg": 40,
+        "sources": [
+          "answer:K1:kg_per_box",
+          "ledger:K1",
+          "talk:K",
+          "order:O1"
+        ]
+      },
+      {
+        "order": "O2",
+        "product": "고등어",
+        "kg": 20,
+        "sources": [
+          "ledger:G1",
+          "talk:G",
+          "order:O2"
+        ]
+      }
+    ],
+    "held": [],
+    "issues": [],
+    "questions": [
+      {
+        "source": "ledger:K1",
+        "question": "K1:kg_per_box",
+        "answer": 10
+      }
+    ],
+    "policy": "verified-stock, whole-order FIFO",
+    "verified": true,
+    "shipped_kg": 60
+  },
+  "trace": [
+    {
+      "step": "extract",
+      "state": "COMPLETE",
+      "input": {
+        "hash": "sha256:7462c7a4b9ea288cb285a814739b21af742204460726fdbf3e2db7ff0d261141",
+        "byteCount": 653,
+        "recordCount": 1,
+        "schemaRef": "village-practice/extract@1.0.0:input"
+      },
+      "output": {
+        "hash": "sha256:012eb1f8454d5cef8a246d02462bc5dceefc11b8f3c66f38e9d6251286963bda",
+        "byteCount": 944,
+        "recordCount": 1,
+        "schemaRef": "village-practice/extract@1.0.0:output"
+      }
+    },
+    {
+      "step": "reconcile",
+      "state": "COMPLETE",
+      "input": {
+        "hash": "sha256:54af6b390b67d313ea321cf902fc6396fa7c88ddb318ef915dc7604975a287ce",
+        "byteCount": 955,
+        "recordCount": 1,
+        "schemaRef": "village-practice/reconcile@1.0.0:input"
+      },
+      "output": {
+        "hash": "sha256:85a646ad5b7a7f0eef11183decb5e1699ea6540874d20e17d60bfbb3374c35bd",
+        "byteCount": 378,
+        "recordCount": 1,
+        "schemaRef": "village-practice/reconcile@1.0.0:output"
+      }
+    },
+    {
+      "step": "decide",
+      "state": "COMPLETE",
+      "input": {
+        "hash": "sha256:68f3dd076c73d8468d2cee0177e9053c612cd813c49a25ccdecd1c808bf988f8",
+        "byteCount": 388,
+        "recordCount": 1,
+        "schemaRef": "village-practice/decide@1.0.0:input"
+      },
+      "output": {
+        "hash": "sha256:4c5fc1618f6f3d2c52e28995f8b92374ab69818d9b2965091e06b3330e4f25d0",
+        "byteCount": 372,
+        "recordCount": 1,
+        "schemaRef": "village-practice/decide@1.0.0:output"
+      }
+    },
+    {
+      "step": "verify",
+      "state": "COMPLETE",
+      "input": {
+        "hash": "sha256:767489fec25d43645a87ed3018f7140f904a8c98cb3cdb0cb1d9405147e1dd59",
+        "byteCount": 770,
+        "recordCount": 1,
+        "schemaRef": "village-practice/verify@1.0.0:input"
+      },
+      "output": {
+        "hash": "sha256:315c2f316c439e0045400a6da87964e604e56b8409c69039dd8b10a8a946566a",
+        "byteCount": 404,
+        "recordCount": 1,
+        "schemaRef": "village-practice/verify@1.0.0:output"
+      }
+    }
+  ]
+}

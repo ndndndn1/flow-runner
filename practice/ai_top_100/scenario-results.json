@@ -1,0 +1,582 @@
+{
+  "normal": {
+    "input": {
+      "inventory": [
+        {
+          "id": "K1",
+          "village": "교동마을",
+          "product": "감자",
+          "quantity": 5,
+          "unit": "box",
+          "kg_per_box": null,
+          "source": "ledger:K1"
+        },
+        {
+          "id": "G1",
+          "village": "갯마을",
+          "product": "고등어",
+          "quantity": 30,
+          "unit": "kg",
+          "kg_per_box": null,
+          "source": "ledger:G1"
+        }
+      ],
+      "orders": [
+        {
+          "id": "O1",
+          "product": "감자",
+          "kg": 40,
+          "source": "order:O1"
+        },
+        {
+          "id": "O2",
+          "product": "고등어",
+          "kg": 20,
+          "source": "order:O2"
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "talk:K",
+          "speaker": "교동마을 창고 담당",
+          "text": "감자 재고는 50 kg입니다."
+        },
+        {
+          "id": "talk:G",
+          "speaker": "갯마을 창고 담당",
+          "text": "고등어 재고는 30 kg입니다."
+        }
+      ],
+      "answers": {
+        "K1:kg_per_box": 10
+      },
+      "capacity_kg": 60
+    },
+    "report": {
+      "result": {
+        "status": "ready",
+        "shipments": [
+          {
+            "order": "O1",
+            "product": "감자",
+            "kg": 40,
+            "sources": [
+              "answer:K1:kg_per_box",
+              "ledger:K1",
+              "talk:K",
+              "order:O1"
+            ]
+          },
+          {
+            "order": "O2",
+            "product": "고등어",
+            "kg": 20,
+            "sources": [
+              "ledger:G1",
+              "talk:G",
+              "order:O2"
+            ]
+          }
+        ],
+        "held": [],
+        "issues": [],
+        "questions": [
+          {
+            "source": "ledger:K1",
+            "question": "K1:kg_per_box",
+            "answer": 10
+          }
+        ],
+        "policy": "verified-stock, whole-order FIFO",
+        "verified": true,
+        "shipped_kg": 60
+      },
+      "trace": [
+        {
+          "step": "extract",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:7462c7a4b9ea288cb285a814739b21af742204460726fdbf3e2db7ff0d261141",
+            "byteCount": 653,
+            "recordCount": 1,
+            "schemaRef": "village-practice/extract@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:012eb1f8454d5cef8a246d02462bc5dceefc11b8f3c66f38e9d6251286963bda",
+            "byteCount": 944,
+            "recordCount": 1,
+            "schemaRef": "village-practice/extract@1.0.0:output"
+          }
+        },
+        {
+          "step": "reconcile",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:54af6b390b67d313ea321cf902fc6396fa7c88ddb318ef915dc7604975a287ce",
+            "byteCount": 955,
+            "recordCount": 1,
+            "schemaRef": "village-practice/reconcile@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:85a646ad5b7a7f0eef11183decb5e1699ea6540874d20e17d60bfbb3374c35bd",
+            "byteCount": 378,
+            "recordCount": 1,
+            "schemaRef": "village-practice/reconcile@1.0.0:output"
+          }
+        },
+        {
+          "step": "decide",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:68f3dd076c73d8468d2cee0177e9053c612cd813c49a25ccdecd1c808bf988f8",
+            "byteCount": 388,
+            "recordCount": 1,
+            "schemaRef": "village-practice/decide@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:4c5fc1618f6f3d2c52e28995f8b92374ab69818d9b2965091e06b3330e4f25d0",
+            "byteCount": 372,
+            "recordCount": 1,
+            "schemaRef": "village-practice/decide@1.0.0:output"
+          }
+        },
+        {
+          "step": "verify",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:767489fec25d43645a87ed3018f7140f904a8c98cb3cdb0cb1d9405147e1dd59",
+            "byteCount": 770,
+            "recordCount": 1,
+            "schemaRef": "village-practice/verify@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:315c2f316c439e0045400a6da87964e604e56b8409c69039dd8b10a8a946566a",
+            "byteCount": 404,
+            "recordCount": 1,
+            "schemaRef": "village-practice/verify@1.0.0:output"
+          }
+        }
+      ]
+    }
+  },
+  "missing_unit": {
+    "input": {
+      "inventory": [
+        {
+          "id": "K1",
+          "village": "교동마을",
+          "product": "감자",
+          "quantity": 5,
+          "unit": "box",
+          "kg_per_box": null,
+          "source": "ledger:K1"
+        },
+        {
+          "id": "G1",
+          "village": "갯마을",
+          "product": "고등어",
+          "quantity": 30,
+          "unit": "kg",
+          "kg_per_box": null,
+          "source": "ledger:G1"
+        }
+      ],
+      "orders": [
+        {
+          "id": "O1",
+          "product": "감자",
+          "kg": 40,
+          "source": "order:O1"
+        },
+        {
+          "id": "O2",
+          "product": "고등어",
+          "kg": 20,
+          "source": "order:O2"
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "talk:K",
+          "speaker": "교동마을 창고 담당",
+          "text": "감자 재고는 50 kg입니다."
+        },
+        {
+          "id": "talk:G",
+          "speaker": "갯마을 창고 담당",
+          "text": "고등어 재고는 30 kg입니다."
+        }
+      ],
+      "answers": {},
+      "capacity_kg": 60
+    },
+    "report": {
+      "result": {
+        "status": "needs_review",
+        "shipments": [
+          {
+            "order": "O2",
+            "product": "고등어",
+            "kg": 20,
+            "sources": [
+              "ledger:G1",
+              "talk:G",
+              "order:O2"
+            ]
+          }
+        ],
+        "held": [
+          {
+            "order": "O1",
+            "reason": "insufficient_verified_stock_or_capacity"
+          }
+        ],
+        "issues": [
+          {
+            "product": "감자",
+            "code": "MISSING_UNIT",
+            "sources": [
+              "ledger:K1"
+            ]
+          },
+          {
+            "product": "감자",
+            "code": "CONFLICT",
+            "sources": [
+              "talk:K"
+            ],
+            "ledger_kg": 0,
+            "claims": [
+              {
+                "product": "감자",
+                "kg": 50.0,
+                "source": "talk:K",
+                "speaker": "교동마을 창고 담당",
+                "quote": "감자 재고는 50 kg입니다."
+              }
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "source": "ledger:K1",
+            "question": "K1:kg_per_box",
+            "answer": null
+          }
+        ],
+        "policy": "verified-stock, whole-order FIFO",
+        "verified": true,
+        "shipped_kg": 20
+      },
+      "trace": [
+        {
+          "step": "extract",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:dc943cf1330d5caba130d3f86553245662b6a56328d79dd124a327ff442b9540",
+            "byteCount": 635,
+            "recordCount": 1,
+            "schemaRef": "village-practice/extract@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:68c80634513883ac1e319161af49f2f1f342aa0348c7f1e95b5f118eaa69e72e",
+            "byteCount": 926,
+            "recordCount": 1,
+            "schemaRef": "village-practice/extract@1.0.0:output"
+          }
+        },
+        {
+          "step": "reconcile",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:86f42397decf7b8d2e2de21e21de7a143f000e1be867362d39a81cdc626d23a6",
+            "byteCount": 937,
+            "recordCount": 1,
+            "schemaRef": "village-practice/reconcile@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:cd85dccbef9ca9b339550233ddb8aa52a5e61c6dae9a274b1212b047063d3f27",
+            "byteCount": 626,
+            "recordCount": 1,
+            "schemaRef": "village-practice/reconcile@1.0.0:output"
+          }
+        },
+        {
+          "step": "decide",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:6c0d9afef5b4d64675e3fe4959aa11bfaabd9e58b6ed1a24d299f3e663d6eefe",
+            "byteCount": 636,
+            "recordCount": 1,
+            "schemaRef": "village-practice/decide@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:7f2863433e97c7024067d84bbf0eedf56247bdde90c1c80ef380133b0142a046",
+            "byteCount": 619,
+            "recordCount": 1,
+            "schemaRef": "village-practice/decide@1.0.0:output"
+          }
+        },
+        {
+          "step": "verify",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:1e59b399d0304c069f2250ade7f9c3d4a3cdc3a921fbd49a5325a9c21cdefbbd",
+            "byteCount": 1265,
+            "recordCount": 1,
+            "schemaRef": "village-practice/verify@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:0981b31a19de88ff6fcb8880b8852e47cbad07c5803e1c7d7861144eb13207e1",
+            "byteCount": 651,
+            "recordCount": 1,
+            "schemaRef": "village-practice/verify@1.0.0:output"
+          }
+        }
+      ]
+    }
+  },
+  "conflict": {
+    "input": {
+      "inventory": [
+        {
+          "id": "K1",
+          "village": "교동마을",
+          "product": "감자",
+          "quantity": 5,
+          "unit": "box",
+          "kg_per_box": null,
+          "source": "ledger:K1"
+        },
+        {
+          "id": "G1",
+          "village": "갯마을",
+          "product": "고등어",
+          "quantity": 30,
+          "unit": "kg",
+          "kg_per_box": null,
+          "source": "ledger:G1"
+        }
+      ],
+      "orders": [
+        {
+          "id": "O1",
+          "product": "감자",
+          "kg": 40,
+          "source": "order:O1"
+        },
+        {
+          "id": "O2",
+          "product": "고등어",
+          "kg": 20,
+          "source": "order:O2"
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "talk:K",
+          "speaker": "교동마을 창고 담당",
+          "text": "감자 재고는 80 kg입니다."
+        },
+        {
+          "id": "talk:G",
+          "speaker": "갯마을 창고 담당",
+          "text": "고등어 재고는 30 kg입니다."
+        }
+      ],
+      "answers": {
+        "K1:kg_per_box": 10
+      },
+      "capacity_kg": 60
+    },
+    "report": {
+      "result": {
+        "status": "needs_review",
+        "shipments": [
+          {
+            "order": "O2",
+            "product": "고등어",
+            "kg": 20,
+            "sources": [
+              "ledger:G1",
+              "talk:G",
+              "order:O2"
+            ]
+          }
+        ],
+        "held": [
+          {
+            "order": "O1",
+            "reason": "insufficient_verified_stock_or_capacity"
+          }
+        ],
+        "issues": [
+          {
+            "product": "감자",
+            "code": "CONFLICT",
+            "sources": [
+              "answer:K1:kg_per_box",
+              "ledger:K1",
+              "talk:K"
+            ],
+            "ledger_kg": 50,
+            "claims": [
+              {
+                "product": "감자",
+                "kg": 80.0,
+                "source": "talk:K",
+                "speaker": "교동마을 창고 담당",
+                "quote": "감자 재고는 80 kg입니다."
+              }
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "source": "ledger:K1",
+            "question": "K1:kg_per_box",
+            "answer": 10
+          }
+        ],
+        "policy": "verified-stock, whole-order FIFO",
+        "verified": true,
+        "shipped_kg": 20
+      },
+      "trace": [
+        {
+          "step": "extract",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:b0ccb16cf1f7edfbd91cf61f7cb7bf31d2d32a0cf7ad1917eedccaa8130016b2",
+            "byteCount": 653,
+            "recordCount": 1,
+            "schemaRef": "village-practice/extract@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:dd50007448a11c72321bd7ad6891062dc29c0fbbb8aea2bcd0c37dabb8c9e3c4",
+            "byteCount": 944,
+            "recordCount": 1,
+            "schemaRef": "village-practice/extract@1.0.0:output"
+          }
+        },
+        {
+          "step": "reconcile",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:22963403ad5ff6642fd995dfe7efe183638a4f10b34df3b7fa1a21402ef0c5d1",
+            "byteCount": 955,
+            "recordCount": 1,
+            "schemaRef": "village-practice/reconcile@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:20575fb6a18e12ef60d1136b247b83046d07bea5b87a42f6775d1d53a3db8512",
+            "byteCount": 628,
+            "recordCount": 1,
+            "schemaRef": "village-practice/reconcile@1.0.0:output"
+          }
+        },
+        {
+          "step": "decide",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:1b25d907035bc6df02357de10cccdfc3ae891180a3bb3816a2c7bb8dcc8cfdd1",
+            "byteCount": 638,
+            "recordCount": 1,
+            "schemaRef": "village-practice/decide@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:7af8cd31770b9ffc002fd0f3387425b2b3e8b52bbfb46ed8fe821a721e86256d",
+            "byteCount": 586,
+            "recordCount": 1,
+            "schemaRef": "village-practice/decide@1.0.0:output"
+          }
+        },
+        {
+          "step": "verify",
+          "state": "COMPLETE",
+          "input": {
+            "hash": "sha256:71444fdfff26f3ec7d49b23170aa83419a875e8ca0c4457f1298004131700633",
+            "byteCount": 1234,
+            "recordCount": 1,
+            "schemaRef": "village-practice/verify@1.0.0:input"
+          },
+          "output": {
+            "hash": "sha256:387fb6955ebac5f52825bc3bcb5b6381aac6b68626fca7a900f32d936176681f",
+            "byteCount": 618,
+            "recordCount": 1,
+            "schemaRef": "village-practice/verify@1.0.0:output"
+          }
+        }
+      ]
+    }
+  },
+  "bad_data": {
+    "input": {
+      "inventory": [
+        {
+          "id": "K1",
+          "village": "교동마을",
+          "product": "감자",
+          "quantity": -1,
+          "unit": "box",
+          "kg_per_box": null,
+          "source": "ledger:K1"
+        },
+        {
+          "id": "G1",
+          "village": "갯마을",
+          "product": "고등어",
+          "quantity": 30,
+          "unit": "kg",
+          "kg_per_box": null,
+          "source": "ledger:G1"
+        }
+      ],
+      "orders": [
+        {
+          "id": "O1",
+          "product": "감자",
+          "kg": 40,
+          "source": "order:O1"
+        },
+        {
+          "id": "O2",
+          "product": "고등어",
+          "kg": 20,
+          "source": "order:O2"
+        }
+      ],
+      "dialogue": [
+        {
+          "id": "talk:K",
+          "speaker": "교동마을 창고 담당",
+          "text": "감자 재고는 50 kg입니다."
+        },
+        {
+          "id": "talk:G",
+          "speaker": "갯마을 창고 담당",
+          "text": "고등어 재고는 30 kg입니다."
+        }
+      ],
+      "answers": {
+        "K1:kg_per_box": 10
+      },
+      "capacity_kg": 60
+    },
+    "report": {
+      "result": {
+        "status": "failed",
+        "verified": false,
+        "shipments": [],
+        "error": "-1 is less than the minimum of 0\n\nFailed validating 'minimum' in schema['properties']['inventory']['items']['properties']['quantity']:\n    {'type': 'number', 'minimum': 0}\n\nOn instance['inventory'][0]['quantity']:\n    -1"
+      },
+      "trace": [
+        {
+          "step": "extract",
+          "state": "FAIL",
+          "error": "-1 is less than the minimum of 0\n\nFailed validating 'minimum' in schema['properties']['inventory']['items']['properties']['quantity']:\n    {'type': 'number', 'minimum': 0}\n\nOn instance['inventory'][0]['quantity']:\n    -1"
+        }
+      ]
+    }
+  }
+}
